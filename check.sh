@@ -21,4 +21,8 @@ python3 -m mypy \
     --warn-unreachable
 
 echo "Running tests"
-python3 -m pytest $TEST_DIR
+python3 -m pytest \
+    --cov=dcel \
+    --cov-report html \
+    --cov-report term \
+    $TEST_DIR
