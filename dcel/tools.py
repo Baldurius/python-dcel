@@ -1,8 +1,11 @@
 from .dcel import *
 
 
-def merge_regular_node( node: Node ) -> None:
-    """Remove a regular node by rerouting incident edges to connect it's neighbors."""
+def merge_regular_node(node: Node) -> None:
+    """
+    Remove a regular node by rerouting incident edges to connect it's
+    neighbors.
+    """
 
     # A regular node has to have degree 2
     assert node.degree == 2
@@ -25,4 +28,3 @@ def merge_regular_node( node: Node ) -> None:
     e1.remove()
     e2.remove()
     node.remove()
-
