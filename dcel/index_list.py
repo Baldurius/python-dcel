@@ -1,5 +1,4 @@
-class IndexList:
-    pass
+from typing import List, Any
 
 
 class IndexListIterator:
@@ -20,9 +19,9 @@ class IndexListIterator:
 
 class IndexList:
     def __init__(self) -> None:
-        self._elements = []
-        self._used = []
-        self.__indices = []
+        self._elements: List[Any] = []
+        self._used: List[bool] = []
+        self.__indices: List[int] = []
 
     def push(self, value=None) -> int:
         if not self.__indices:
