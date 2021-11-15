@@ -1,7 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from .index_list import IndexList
-from typing import Optional
+from typing import Optional, Any
 
 
 @dataclass
@@ -52,18 +52,20 @@ class Node(object):
 
     @property
     def __data(self) -> NodeData:
-        return self.__dcel._nodes[self.__index]
+        data = self.__dcel._nodes[self.__index]
+        assert data is not None
+        return data
 
-    def __eq__(self, other):
-        return self.__index == other.__index
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, Node) and self.__index == other.__index
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: Any, value: Any) -> None:
         setattr(self.__data, key, value)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: Any) -> Any:
         return getattr(self.__data, key)
 
-    def __delitem__(self, key):
+    def __delitem__(self, key: Any) -> None:
         delattr(self.__data, key)
 
 
@@ -89,7 +91,7 @@ class Edge(object):
         return Node(self.__dcel, self.__data.node)
 
     @node.setter
-    def node(self, node: Node):
+    def node(self, node: Node) -> None:
         self.__data.node = node.index
 
     @property
@@ -98,7 +100,7 @@ class Edge(object):
         return Edge(self.__dcel, self.__data.twin)
 
     @twin.setter
-    def twin(self, edge: Edge):
+    def twin(self, edge: Edge) -> None:
         self.__data.twin = edge.index
 
     @property
@@ -107,7 +109,7 @@ class Edge(object):
         return Edge(self.__dcel, self.__data.prv)
 
     @prv.setter
-    def prv(self, edge: Edge):
+    def prv(self, edge: Edge) -> None:
         self.__data.prv = edge.index
 
     @property
@@ -116,30 +118,32 @@ class Edge(object):
         return Edge(self.__dcel, self.__data.nxt)
 
     @nxt.setter
-    def nxt(self, edge: Edge):
+    def nxt(self, edge: Edge) -> None:
         self.__data.nxt = edge.index
 
     @property
     def __data(self) -> EdgeData:
-        return self.__dcel._edges[self.__index]
+        data = self.__dcel._edges[self.__index]
+        assert data is not None
+        return data
 
-    def __eq__(self, other):
-        return self.__index == other.__index
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, Edge) and self.__index == other.__index
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: Any, value: Any) -> None:
         setattr(self.__data, key, value)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: Any) -> Any:
         return getattr(self.__data, key)
 
-    def __delitem__(self, key):
+    def __delitem__(self, key: Any) -> None:
         delattr(self.__data, key)
 
 
 class Dcel:
     def __init__(self) -> None:
-        self._edges = IndexList()
-        self._nodes = IndexList()
+        self._edges: IndexList[EdgeData] = IndexList()
+        self._nodes: IndexList[NodeData] = IndexList()
 
     def add_node(self) -> Node:
         index = self._nodes.push()
@@ -152,11 +156,11 @@ class Dcel:
         return Edge(self, index)
 
     @property
-    def nodes(self):
+    def nodes(self) -> NodeIterator:
         return NodeIterator(self)
 
     @property
-    def edges(self):
+    def edges(self) -> EdgeIterator:
         return EdgeIterator(self)
 
     def node(self, index: int) -> Node:
@@ -165,22 +169,16 @@ class Dcel:
     def edge(self, index: int) -> Edge:
         return Edge(self, index)
 
-    def _node_data(self, index: int) -> NodeData:
-        return self._nodes[index]
-
-    def _edge_data(self, index: int) -> EdgeData:
-        return self._edges[index]
-
 
 class NodeEdgeIterator:
     def __init__(self, node: Node) -> None:
         self.__node = node
-        self.__edge = self.__node.edge
+        self.__edge: Optional[Edge] = self.__node.edge
 
-    def __iter__(self):
+    def __iter__(self) -> NodeEdgeIterator:
         return self
 
-    def __next__(self):
+    def __next__(self) -> Edge:
         if self.__edge is None:
             raise StopIteration
 
@@ -198,10 +196,10 @@ class NodeIterator:
         self.__dcel = dcel
         self.__index = 0
 
-    def __iter__(self):
+    def __iter__(self) -> NodeIterator:
         return self
 
-    def __next__(self):
+    def __next__(self) -> Node:
         while True:
             if self.__index >= self.__dcel._nodes.max_index:
                 raise StopIteration
@@ -217,10 +215,10 @@ class EdgeIterator:
         self.__dcel = dcel
         self.__index = 0
 
-    def __iter__(self):
+    def __iter__(self) -> EdgeIterator:
         return self
 
-    def __next__(self):
+    def __next__(self) -> Edge:
         while True:
             if self.__index >= self.__dcel._edges.max_index:
                 raise StopIteration

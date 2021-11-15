@@ -4,8 +4,8 @@ from dcel.index_list import IndexList
 import pytest
 
 
-def test_index_list():
-    index_list = IndexList()
+def test_index_list() -> None:
+    index_list: IndexList[int] = IndexList()
 
     # Push new element
     assert 0 == index_list.push()

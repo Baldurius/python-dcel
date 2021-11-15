@@ -8,7 +8,17 @@ echo "Running pycodestyle"
 python3 -m pycodestyle $PROJECT_DIR
 
 echo "Running mypy"
-python3 -m mypy $PROJECT_DIR
+python3 -m mypy \
+    $PROJECT_DIR \
+    --disallow-untyped-calls \
+    --disallow-incomplete-defs \
+    --disallow-untyped-decorators \
+    --disallow-untyped-defs \
+    --warn-redundant-casts \
+    --warn-unused-ignores \
+    --no-warn-no-return \
+    --warn-return-any \
+    --warn-unreachable
 
 echo "Running tests"
 python3 -m pytest $TEST_DIR

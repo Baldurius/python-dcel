@@ -2,7 +2,7 @@ import _paths
 from dcel import Dcel
 
 
-def test_dcel():
+def test_dcel() -> None:
     dcel = Dcel()
 
     edge = dcel.add_edge()
