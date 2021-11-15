@@ -9,6 +9,10 @@ class IndexListIterator(Iterator[Optional[ValueType]]):
         self.__container = container
         self.__index: int = 0
 
+    @property
+    def index(self) -> int:
+        return self.__index - 1
+
     def __next__(self) -> Optional[ValueType]:
         while True:
             if self.__index >= len(self.__container._elements):

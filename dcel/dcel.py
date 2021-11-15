@@ -194,36 +194,24 @@ class NodeEdgeIterator:
 class NodeIterator:
     def __init__(self, dcel: Dcel) -> None:
         self.__dcel = dcel
-        self.__index = 0
+        self.__iter = dcel._nodes.__iter__()
 
     def __iter__(self) -> NodeIterator:
         return self
 
     def __next__(self) -> Node:
-        while True:
-            if self.__index >= self.__dcel._nodes.max_index:
-                raise StopIteration
-
-            self.__index += 1
-
-            if self.__dcel._nodes.is_valid(self.__index - 1):
-                return Node(self.__dcel, self.__index - 1)
+        next(self.__iter)
+        return Node(self.__dcel, self.__iter.index)
 
 
 class EdgeIterator:
     def __init__(self, dcel: Dcel) -> None:
         self.__dcel = dcel
-        self.__index = 0
+        self.__iter = dcel._edges.__iter__()
 
     def __iter__(self) -> EdgeIterator:
         return self
 
     def __next__(self) -> Edge:
-        while True:
-            if self.__index >= self.__dcel._edges.max_index:
-                raise StopIteration
-
-            self.__index += 1
-
-            if self.__dcel._edges.is_valid(self.__index - 1):
-                return Edge(self.__dcel, self.__index - 1)
+        next(self.__iter)
+        return Edge(self.__dcel, self.__iter.index)
