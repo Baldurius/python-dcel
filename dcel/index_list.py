@@ -1,13 +1,15 @@
 from __future__ import annotations
 from typing import List, Any, Generic, TypeVar, Optional
 
+ValueType = TypeVar('ValueType')
+
 
 class IndexListIterator:
-    def __init__(self, container: IndexList) -> None:
+    def __init__(self, container: IndexList[ValueType]) -> None:
         self.__container = container
         self.__index: int = 0
 
-    def __next__(self) -> Any:
+    def __next__(self) -> Optional[ValueType]:
         while True:
             if self.__index >= len(self.__container._elements):
                 raise StopIteration
@@ -16,9 +18,6 @@ class IndexListIterator:
 
             if self.__container._used[self.__index - 1]:
                 return self.__container._elements[self.__index - 1]
-
-
-ValueType = TypeVar('ValueType')
 
 
 class IndexList(Generic[ValueType]):
