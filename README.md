@@ -17,7 +17,7 @@ Each half-edge holds four references:
   
 With this structure, graph traversal becomes a matter of following the network of connected half-edges through the stored references.
 To, e.g., get all outgoing edges of a node, one can write:
-```
+```python
 edge = node.edge
 while True:
     yield edge
@@ -26,7 +26,7 @@ while True:
       break
 ```
 or use the provided node-edge iterator:
-```
+```python
 for edge in node.edges:
     yield edge
 ```
@@ -36,7 +36,7 @@ for edge in node.edges:
 The project strictly follows the `PEP8` coding style and uses type hints.
 To check all source files for errors and run the tests, simply run:
 
-```
+```shell
 check.sh
 ```
 
@@ -46,7 +46,7 @@ Running the script also creates a `htmlcov` directory that contains code coverag
 
 To use the library, just import the `Dcel` class from the `dcel` package:
 
-```
+```python
 from dcel import Dcel
 
 graph = Dcel()
