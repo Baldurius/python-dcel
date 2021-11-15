@@ -42,13 +42,6 @@ class IndexList(Iterable[Optional[ValueType]]):
             self._used[index] = True
             return index
 
-    def is_valid(self, index: int) -> bool:
-        return self._used[index]
-
-    @property
-    def max_index(self) -> int:
-        return len(self._elements)
-
     @property
     def size(self) -> int:
         return len(self._elements) - len(self.__indices)
