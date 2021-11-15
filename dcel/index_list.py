@@ -1,10 +1,10 @@
 from __future__ import annotations
-from typing import List, Any, Generic, TypeVar, Optional
+from typing import List, Any, Generic, TypeVar, Optional, Iterable, Iterator
 
 ValueType = TypeVar('ValueType')
 
 
-class IndexListIterator:
+class IndexListIterator(Iterator[Optional[ValueType]]):
     def __init__(self, container: IndexList[ValueType]) -> None:
         self.__container = container
         self.__index: int = 0
@@ -20,7 +20,7 @@ class IndexListIterator:
                 return self.__container._elements[self.__index - 1]
 
 
-class IndexList(Generic[ValueType]):
+class IndexList(Iterable[Optional[ValueType]]):
     def __init__(self) -> None:
         self._elements: List[Optional[ValueType]] = []
         self._used: List[bool] = []
@@ -62,5 +62,5 @@ class IndexList(Generic[ValueType]):
         self._used[index] = False
         self.__indices.append(index)
 
-    def __iter__(self) -> IndexListIterator:
+    def __iter__(self) -> IndexListIterator[ValueType]:
         return IndexListIterator(self)
