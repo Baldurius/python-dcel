@@ -1,10 +1,12 @@
-from .dcel import *
+from . import dcel
 
 
-def merge_regular_node(node: Node) -> None:
+def merge_regular_node(node: dcel.Node) -> None:
     """
-    Remove a regular node by rerouting incident edges to connect it's
+    Remove a regular node by rerouting incident edges to connect its
     neighbors.
+
+    :param node: Regular node to remove from the corresponding DCEL
     """
 
     # A regular node has to have degree 2
